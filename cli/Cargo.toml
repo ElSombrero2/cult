@@ -8,4 +8,5 @@ name = "cult"
 path = "src/main.rs"
 
 [dependencies]
+tokio = { workspace = true }
 cult = { path = "../cult" }
