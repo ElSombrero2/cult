@@ -10,3 +10,6 @@ path = "src/main.rs"
 [dependencies]
 tokio = { workspace = true }
 cult = { path = "../cult" }
+clap = { version = "4.6.1", features = ["derive"] }
+comfy-table = "7.2.2"
+
