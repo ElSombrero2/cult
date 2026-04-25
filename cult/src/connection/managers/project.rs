@@ -1,6 +1,6 @@
 use std::{ops::Deref, rc::Rc};
 
-use sea_orm::{ActiveValue::Set, DatabaseConnection, EntityTrait};
+use sea_orm::{ActiveValue::Set, DatabaseConnection, EntityTrait, ModelTrait};
 
 use crate::entities::project;
 
@@ -34,6 +34,16 @@ impl ProjectManager {
         }
 
         None
+    }
+
+    pub async fn remove(&self, project_id: i32) -> bool {
+        let req = project::Entity::find_by_id(project_id).one(self.database.deref()).await;
+        
+        if let Ok(res) = req && let Some(project) = res {
+            return project.delete(self.database.deref()).await.is_ok();
+        } 
+
+        return false;
     }
 
     pub async fn find_one(&self, name: String) -> Option<project::Model> {
