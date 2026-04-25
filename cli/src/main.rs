@@ -6,6 +6,7 @@ use cult::{connection::Connection};
 use crate::commands::{CultCli, SubCommand};
 
 pub mod commands;
+pub mod utils;
 
 #[tokio::main]
 async fn main() {
@@ -18,17 +19,10 @@ async fn main() {
 
     match values.command {
         SubCommand::Put { .. } => todo!(),
-        SubCommand::CreateProject { name } => {
-            conn.project.create(name).await;
-        },
-        SubCommand::Projects => {
-            let projects = conn.project.find_all().await;
-            dbg!(&projects);
-            for project in projects {
-                println!("{}", project.name);
-            }
-        },
-        SubCommand::Show { project } => todo!(),
-        SubCommand::Get { project, file } => todo!(),
+        SubCommand::CreateProject { name } => commands::projects::create::exec(conn, name).await,
+        SubCommand::Projects => commands::projects::list::exec(conn).await,
+        SubCommand::Show { .. } => todo!(),
+        SubCommand::Get { .. } => todo!(),
+        _ => todo!(),
     }
 }

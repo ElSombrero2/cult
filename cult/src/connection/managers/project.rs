@@ -18,7 +18,6 @@ impl ProjectManager {
         if let Ok(projects) = req {
             return projects;
         }
-        req.unwrap();
         vec![]
     }
 
@@ -28,19 +27,18 @@ impl ProjectManager {
             ..Default::default()
         };
     
-        let insert = project::Entity::insert(project).exec(self.database.deref()).await;
+        let req = project::Entity::insert(project).exec(self.database.deref()).await;
 
-        if let Ok(res) = insert {
+        if let Ok(res) = req {
             return Some(res.last_insert_id);
         }
-        
-        insert.unwrap();
 
         None
     }
 
     pub async fn find_one(&self, name: String) -> Option<project::Model> {
-        if let Ok(project) = project::Entity::find_by_name(name).one(self.database.deref()).await {
+        let req = project::Entity::find_by_name(name).one(self.database.deref()).await;
+        if let Ok(project) = req {
             return project;
         }
         None

@@ -11,6 +11,8 @@ use clap::{Parser, Subcommand};
 /// local environments store
 ///{n} https://github.com/ElSombrero2/cult.git 
 
+pub mod projects;
+
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
 pub struct CultCli {
@@ -28,8 +30,17 @@ pub enum SubCommand {
         #[arg(short, long)]
         project: String,
     },
+    RemoveKey {
+        #[arg(short, long)]
+        key: String,
+        #[arg(short, long)]
+        project: String,
+    },
     /// Create a new Project
     CreateProject {
+        name: String,
+    },
+    RemoveProject {
         name: String,
     },
     Projects,

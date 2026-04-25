@@ -16,11 +16,11 @@ impl EnvironmentManager {
     }
     
     async fn find_by_project(&self, project_id: i32) -> Vec<environment::Model> {
-        let res = environment::Entity::find()
+        let req = environment::Entity::find()
             .filter(environment::Column::ProjectId.eq(project_id))
             .all(self.database.deref()).await;
-        if let Ok(envs) = res {
-            return envs;
+        if let Ok(res) = req {
+            return res;
         }
         vec![]
     }
@@ -32,9 +32,10 @@ impl EnvironmentManager {
             project_id: Set(project_id),
             ..Default::default()
         };
-           
         
-        if let Ok(res) = environment::Entity::insert(env).exec(self.database.deref()).await {
+        let req = environment::Entity::insert(env).exec(self.database.deref()).await;
+        
+        if let Ok(res) = req {
             return Some(res.last_insert_id);
         }
 
