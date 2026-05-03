@@ -1,5 +1,8 @@
 use clap::{Parser, Subcommand};
 
+pub mod projects;
+pub mod environment;
+
 ///{n}
 ///{n} ██████╗██╗   ██╗██╗  ████████╗██████╗ ███████╗
 ///{n}██╔════╝██║   ██║██║  ╚══██╔══╝██╔══██╗██╔════╝
@@ -9,10 +12,7 @@ use clap::{Parser, Subcommand};
 ///{n} ╚═════╝ ╚═════╝ ╚══════╝╚═╝╚═╝╚═╝  ╚═╝╚══════╝
 ///{n}
 /// local environments store
-///{n} https://github.com/ElSombrero2/cult.git 
-
-pub mod projects;
-
+///{n} https://github.com/ElSombrero2/cult.git
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
 pub struct CultCli {
@@ -22,6 +22,7 @@ pub struct CultCli {
 
 #[derive(Subcommand)]
 pub enum SubCommand {
+    /// Replace a value on your environments
     Put {
         #[arg(short, long)]
         key: String,
@@ -30,6 +31,14 @@ pub enum SubCommand {
         #[arg(short, long)]
         project: String,
     },
+    /// Add a new Key
+    Add {
+        #[arg(short, long)]
+        project: String,
+        key: String,
+        value: String,
+    },
+    /// Remove a key
     RemoveKey {
         #[arg(short, long)]
         key: String,
@@ -40,17 +49,23 @@ pub enum SubCommand {
     CreateProject {
         name: String,
     },
+    /// Remove a project
     RemoveProject {
         name: String,
     },
-    Projects,
-    Show {
-        project: String,
+    /// Rename a project
+    RenameProject {
+        name: String,
+        new_name: String,
     },
+    /// Show all projects
+    Projects,
+    /// Get All keys
     Get {
-        #[arg(short, long)]
         project: String,
+        /// Supported format: json | dotenv | table 
         #[arg(short, long)]
-        file: Option<String>,
-    }
+        format: Option<String>,
+    },
 }
+

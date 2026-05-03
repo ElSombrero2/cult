@@ -523,6 +523,7 @@ dependencies = [
  "clap",
  "comfy-table",
  "cult",
+ "serde_json",
  "tokio",
 ]
 

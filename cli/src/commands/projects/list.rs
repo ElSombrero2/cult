@@ -1,7 +1,6 @@
 use comfy_table::presets;
 use cult::connection::Connection;
-
-use crate::utils::{self, table};
+use crate::utils::table;
 
 pub async fn exec(conn: Connection) {
     let projects = conn.project.find_all().await;

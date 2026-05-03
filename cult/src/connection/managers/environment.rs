@@ -15,7 +15,7 @@ impl EnvironmentManager {
         }
     }
     
-    async fn find_by_project(&self, project_id: i32) -> Vec<environment::Model> {
+    pub async fn find_by_project(&self, project_id: i32) -> Vec<environment::Model> {
         let req = environment::Entity::find()
             .filter(environment::Column::ProjectId.eq(project_id))
             .all(self.database.deref()).await;
@@ -25,7 +25,7 @@ impl EnvironmentManager {
         vec![]
     }
 
-    async fn add(&self, key: String, value: String, project_id: i32) -> Option<i32> {
+    pub async fn add(&self, key: String, value: String, project_id: i32) -> Option<i32> {
         let env = environment::ActiveModel {
             key: Set(key),
             value: Set(value),
@@ -42,7 +42,7 @@ impl EnvironmentManager {
         None
     }
 
-    async fn remove(&self, key: String, project_id: i32) -> bool {
+    pub async fn remove(&self, key: String, project_id: i32) -> bool {
         return environment::Entity::delete(environment::ActiveModel{
             project_id: Set(project_id),
             key: Set(key),
@@ -50,7 +50,7 @@ impl EnvironmentManager {
         }).exec(self.database.deref()).await.is_ok();
     }
 
-    async fn put(&self, key: String, value: String, project_id: i32) -> bool {
+    pub async fn put(&self, key: String, value: String, project_id: i32) -> bool {
         let req = environment::Entity::find()
             .filter(environment::Column::ProjectId.eq(project_id))
             .filter(environment::Column::Key.eq(key))
